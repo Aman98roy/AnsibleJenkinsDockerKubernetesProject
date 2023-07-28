@@ -1,0 +1,17 @@
+ansible-playbook -i /opt/hosts jenkins-master-setup.yaml --check
+
+ansible-playbook -i /opt/hosts jenkins-master-setup.yaml
+
+
+2a38ff239983453482072f14870d5ddb - Jenkins
+
+
+
+
+root@ip-10-1-1-219:/opt# mv kubernetes/ /home/ubuntu/
+root@ip-10-1-1-219:/opt# chown -R ubuntu:ubuntu /home/ubuntu/
+root@ip-10-1-1-219:/opt#
+
+
+
+root@ip-10-1-1-219:/opt# sudo su - ubuntu

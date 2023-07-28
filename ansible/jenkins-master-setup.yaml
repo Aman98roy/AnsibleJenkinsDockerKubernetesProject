@@ -1,0 +1,45 @@
+---
+# Playbook for installing Jenkins on the "jenkins-master" host.
+# We use "become: true" to run tasks with administrative privileges.
+
+- hosts: jenkins-master
+  become: true
+  tasks:
+
+  # Task 1: Add Jenkins Key
+  - name: Add Jenkins Key
+    apt_key:
+      url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key  # URL to Jenkins GPG key.
+      state: present  # Ensure the key is present on the system.
+
+  # Task 2: Add Jenkins Repository
+  - name: Add Jenkins Repo
+    apt_repository:
+      repo: 'deb https://pkg.jenkins.io/debian-stable binary/'  # Jenkins repository URL.
+      state: present  # Ensure the repository is present on the system.
+
+  # Task 3: Install Java (OpenJDK 11 JRE)
+  - name: Install Java
+    apt:
+      name: openjdk-11-jre  # Package name for OpenJDK 11 JRE.
+      state: present  # Ensure Java is installed.
+
+  # Task 4: Install Jenkins
+  - name: Install Jenkins
+    apt:
+      name: jenkins  # Package name for Jenkins.
+      state: present  # Ensure Jenkins is installed.
+
+  # Task 5: Start Jenkins Service
+  - name: Start Jenkins Service
+    service:
+      name: jenkins  # Service name for Jenkins.
+      state: started  # Ensure Jenkins service is running.
+
+  # Task 6: Enable Jenkins to Start at Boot Time
+  - name: Enable Jenkins to start at boot time
+    service:
+      name: jenkins  # Service name for Jenkins.
+      enabled: yes  # Ensure Jenkins service starts automatically on boot.
+
+# End of the playbook.

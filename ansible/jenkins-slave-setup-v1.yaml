@@ -1,0 +1,35 @@
+---
+# Playbook for configuring a Jenkins slave on the "jenkins-slave" host.
+# We use "become: true" to run tasks with administrative privileges.
+
+- hosts: jenkins-slave
+  become: true
+  tasks:
+
+  # Task 1: Update Ubuntu Repository and Cache
+  - name: Update Ubuntu repo and cache
+    apt:
+      update_cache: yes  # Update the package repository cache.
+      force_apt_get: true  # Force APT to get updated package lists.
+      cache_valid_time: 3600  # Cache duration in seconds (1 hour).
+      
+  # Task 2: Install Java (OpenJDK 11 JRE)
+  - name: Install Java
+    apt:
+      name: openjdk-11-jre  # Package name for OpenJDK 11 JRE.
+      state: present  # Ensure Java is installed.
+
+  # Task 3: Download Maven Packages
+  - name: Download Maven packages
+    get_url:
+      url: https://dlcdn.apache.org/maven/maven-3/3.9.3/binaries/apache-maven-3.9.3-bin.tar.gz  # URL to Maven package.
+      dest: /opt  # Destination directory to save the downloaded file.
+
+  # Task 4: Extract Maven Packages
+  - name: Extract Maven packages
+    unarchive:
+      src: /opt/apache-maven-3.9.3-bin.tar.gz  # Source location of the downloaded Maven archive.
+      dest: /opt  # Destination directory for extracting Maven.
+      remote_src: yes  # Set to "yes" as the source is on a remote host.
+
+# End of the playbook.

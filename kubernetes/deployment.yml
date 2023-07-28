@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aman-rtp
+  namespace: aman
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app:  aman-rtp
+  template:
+    metadata:
+      labels:
+        app:  aman-rtp
+    spec:
+      imagePullSecrets:
+      - name: docker-cred-jfrog
+      containers:
+      - name:  aman-rtp
+        image: dimlav.jfrog.io/aman-app-docker-local/springboot:1.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
